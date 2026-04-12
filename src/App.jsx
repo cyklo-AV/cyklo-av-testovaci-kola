@@ -190,6 +190,11 @@ const printContract = () => {
       </label>
 
       <h2>Celkem: {total} Kč</h2>
+      <h2>Celkem: {total} Kč</h2>
+
+<button onClick={printContract}>
+  Vytisknout smlouvu
+</button>
     </div>
   );
 }
