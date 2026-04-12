@@ -113,18 +113,11 @@ const printContract = () => {
 <div class="section">
   <strong>QR platby:</strong><br/><br/>
 
-  <table>
-    <tr>
-      <td>
-        Zápůjčné:<br/>
-        <img src="${generateQR(total, "Zapujcne")}" width="120"/>
-      </td>
-      <td style="padding-left: 20px;">
-        Kauce:<br/>
-        <img src="${generateQR(form.deposit, "Kauce")}" width="120"/>
-      </td>
-    </tr>
-  </table>
+  Zápůjčné:<br/>
+  <img src="${generateQR(total, "Zapujcne kolo")}" /><br/><br/>
+
+  Kauce:<br/>
+  <img src="${generateQR(form.deposit, "Kauce kolo")}" />
 </div>
 
         <div class="section">
