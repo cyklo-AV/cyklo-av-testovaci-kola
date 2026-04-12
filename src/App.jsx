@@ -149,7 +149,7 @@ const printContract = () => {
   win.print();
 }; 
 const generateQR = (amount, message) => {
-  const iban = "CZ6508000000192000145399"; // uprav na svůj účet
+  const iban = "CZ4955000000000794545052"; // uprav na svůj účet
 
   const spayd = `SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*MSG:${message}`;
 
