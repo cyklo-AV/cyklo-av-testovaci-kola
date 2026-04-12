@@ -44,7 +44,7 @@ export default function App() {
   extras: {},
   airtag: false,
   idType: "OP",
-  idNumber: "",
+  idNumber: ""
 });
 
   const handleChange = (e) => {
@@ -121,7 +121,7 @@ const printContract = () => {
         </div>
 
         <div class="section">
-          AirTag sledování (souhlaas zákazníka): ${form.airtag ? "ANO" : "NE"}
+          AirTag sledování (souhlas zákazníka): ${form.airtag ? "ANO" : "NE"}
         </div>
 
        <br/><br/>
@@ -141,6 +141,10 @@ const printContract = () => {
   `;
 
   const win = window.open("", "_blank");
+  if (!win) {
+  alert("Povol popup okna pro tisk smlouvy");
+  return;
+}
   win.document.write(content);
   win.document.close();
   win.print();
@@ -209,9 +213,12 @@ const printContract = () => {
       ))}
 
       <label>
-        <input type="checkbox" name="airtag" onChange={handleChange} />
-        Souhlas s AirTag
-      </label>
+      <input
+  type="checkbox"
+  name="airtag"
+  checked={form.airtag}
+  onChange={handleChange}
+/>
 
       <h2>Celkem: {total} Kč</h2>
      
