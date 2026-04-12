@@ -155,9 +155,13 @@ const printContract = () => {
     return;
 }
   win.document.write(content);
-  win.document.close();
-  win.print();
-}; 
+win.document.close();
+
+win.onload = () => {
+  setTimeout(() => {
+    win.print();
+  }, 500); // krátké zpoždění = načtou se QR
+};
 const generateQR = (amount, message) => {
   const iban = "CZ4955000000000794545052"; // uprav na svůj účet
 
