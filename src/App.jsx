@@ -33,14 +33,14 @@ const EXTRAS = [
 ];
 
 export default function App() {
-  const [form, setForm] = useState({
+ const [form, setForm] = useState({
   name: "",
   phone: "",
-  bike: BIKES[0],
-  frame: "",
-  price: 0,
+  bike: BIKES[0].name,
+  frame: BIKES[0].frames[0],
+  price: BIKES[0].price,
   days: 1,
-  deposit: 0,
+  deposit: BIKES[0].deposit,
   extras: {},
   airtag: false
 });
@@ -74,7 +74,8 @@ export default function App() {
       <input placeholder="Jméno" name="name" onChange={handleChange} /><br/><br/>
       <input placeholder="Telefon" name="phone" onChange={handleChange} /><br/><br/>
 
-      <select
+    <select
+  value={form.bike}
   onChange={(e) => {
     const selected = BIKES.find(b => b.name === e.target.value);
     setForm({
