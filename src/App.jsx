@@ -44,7 +44,7 @@ export default function App() {
   extras: {},
   airtag: false,
   idType: "OP",
-  idNumber: ""
+  idNumber: "",
 });
 
   const handleChange = (e) => {
