@@ -79,11 +79,18 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
   const printContract = () => {
   const contractId = Date.now();
   const now = new Date();
+
   const formatDate = now.toLocaleString("cs-CZ");
   const variableSymbol = contractId.toString().slice(-10);
 
   const generateQR = (amount, message) => {
-  
+    const iban = "CZ4955000000000794545052";
+
+    const spayd = `SPD*1.0*ACC:${iban}*AM:${Number(amount).toFixed(2)}*CC:CZK*X-VS:${variableSymbol}*MSG:${message}`;
+
+    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(spayd)}`;
+  };
+
   const content = `
     <html>
       <head>
@@ -95,6 +102,7 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
         </style>
       </head>
       <body>
+
         <h1>Smlouva o výpůjčce kola</h1>
 
         <div class="section">
@@ -127,7 +135,7 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
         <div class="section">
           <strong>Výpůjčka:</strong><br/>
           Počet dní: ${form.days}<br/>
-          Cena celkem: ${total} Kč<br/>
+          Cena: ${total} Kč<br/>
           Kauce: ${form.deposit} Kč
         </div>
 
@@ -135,10 +143,10 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
           <strong>QR platby:</strong><br/><br/>
 
           Zápůjčné:<br/>
-          <img src="${generateQR(total, "Zapujcne")}" width="150"/><br/><br/>
+          <img src="${generateQR(total, "ZAPUJCKA")}" width="150"/><br/><br/>
 
           Kauce:<br/>
-          <img src="${generateQR(form.deposit, "Kauce")}" width="150"/>
+          <img src="${generateQR(form.deposit, "KAUCE")}" width="150"/>
         </div>
 
         <div class="section">
@@ -171,8 +179,9 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
   `;
 
   const win = window.open("", "_blank");
+
   if (!win) {
-    alert("Povol popup okna pro tisk smlouvy");
+    alert("Povol popup okna");
     return;
   }
 
@@ -182,7 +191,7 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
   setTimeout(() => {
     win.focus();
     win.print();
-  }, 1000);
+  }, 800);
 };
 
   const iban = "CZ4955000000000794545052";
