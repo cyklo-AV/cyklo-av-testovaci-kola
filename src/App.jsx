@@ -66,7 +66,76 @@ export default function App() {
   );
 
   const total = (Number(form.price) + extrasSum) * Number(form.days);
+const printContract = () => {
+  const content = `
+    <html>
+      <head>
+        <title>Smlouva o výpůjčce</title>
+        <style>
+          body { font-family: Arial; padding: 20px; }
+          h1 { margin-bottom: 10px; }
+          .section { margin-bottom: 15px; }
+        </style>
+      </head>
+      <body>
+        <h1>Smlouva o výpůjčce kola</h1>
 
+        <div class="section">
+          <strong>Půjčitel:</strong><br/>
+          Aleš Vondráček - cyklo/AV<br/>
+          IČ: 65099630<br/>
+          Fučíkova 665, Raspenava<br/>
+          Tel: +420792306880
+        </div>
+
+        <div class="section">
+          <strong>Zákazník:</strong><br/>
+          ${form.name}<br/>
+          ${form.phone}
+        </div>
+
+        <div class="section">
+          <strong>Kolo:</strong><br/>
+          ${form.bike}<br/>
+          Rám: ${form.frame}
+        </div>
+
+        <div class="section">
+          <strong>Výpůjčka:</strong><br/>
+          Počet dní: ${form.days}<br/>
+          Cena celkem: ${total} Kč<br/>
+          Kauce: ${form.deposit} Kč
+        </div>
+
+        <div class="section">
+          <strong>Doplňky:</strong><br/>
+          ${
+            EXTRAS
+              .filter(e => form.extras[e.id])
+              .map(e => e.label)
+              .join(", ") || "žádné"
+          }
+        </div>
+
+        <div class="section">
+          AirTag sledování: ${form.airtag ? "ANO" : "NE"}
+        </div>
+
+        <br/><br/>
+
+        <div class="section">
+          Podpis zákazníka: ________________________
+        </div>
+
+      </body>
+    </html>
+  `;
+
+  const win = window.open("", "_blank");
+  win.document.write(content);
+  win.document.close();
+  win.print();
+};
   return (
     <div style={{ padding: 20, maxWidth: 600 }}>
       <h1>cyklo-AV TESTovací kola</h1>
