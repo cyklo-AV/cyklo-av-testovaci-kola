@@ -77,6 +77,19 @@ const formatDate = now.toLocaleString("cs-CZ");
 const variableSymbol = contractId.toString().slice(-10); // kratší VS
   
   const printContract = () => {
+  const contractId = Date.now();
+  const now = new Date();
+  const formatDate = now.toLocaleString("cs-CZ");
+  const variableSymbol = contractId.toString().slice(-10);
+
+  const generateQR = (amount, message) => {
+    const iban = "CZ4955000000000794545052";
+
+    const spayd = `SPD*1.0*ACC:${iban}*AM:${amount}.00*CC:CZK*X-VS:${variableSymbol}*MSG:${message}`;
+
+    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(spayd)}`;
+  };
+
   const content = `
     <html>
       <head>
@@ -90,11 +103,11 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
       <body>
         <h1>Smlouva o výpůjčce kola</h1>
 
-<div class="section">
-  <strong>Číslo smlouvy:</strong> ${contractId}<br/>
-  <strong>Datum:</strong> ${formatDate}<br/>
-  <strong>Variabilní symbol:</strong> ${variableSymbol}
-</div>
+        <div class="section">
+          <strong>Číslo smlouvy:</strong> ${contractId}<br/>
+          <strong>Datum:</strong> ${formatDate}<br/>
+          <strong>Variabilní symbol:</strong> ${variableSymbol}
+        </div>
 
         <div class="section">
           <strong>Půjčitel:</strong><br/>
@@ -105,11 +118,11 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
         </div>
 
         <div class="section">
-  <strong>Zákazník:</strong><br/>
-  ${form.name}<br/>
-  ${form.phone}<br/>
-  ${form.idType}: ${form.idNumber}
-</div>
+          <strong>Zákazník:</strong><br/>
+          ${form.name}<br/>
+          ${form.phone}<br/>
+          ${form.idType}: ${form.idNumber}
+        </div>
 
         <div class="section">
           <strong>Kolo:</strong><br/>
@@ -124,15 +137,15 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
           Kauce: ${form.deposit} Kč
         </div>
 
-<div class="section">
-  <strong>QR platby:</strong><br/><br/>
+        <div class="section">
+          <strong>QR platby:</strong><br/><br/>
 
-  Zápůjčné:<br/>
-  <img src="${generateQR(total, "Zapujcne kolo")}" /><br/><br/>
+          Zápůjčné:<br/>
+          <img src="${generateQR(total, "Zapujcne")}" width="150"/><br/><br/>
 
-  Kauce:<br/>
-  <img src="${generateQR(form.deposit, "Kauce kolo")}" />
-</div>
+          Kauce:<br/>
+          <img src="${generateQR(form.deposit, "Kauce")}" width="150"/>
+        </div>
 
         <div class="section">
           <strong>Doplňky:</strong><br/>
@@ -145,40 +158,39 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
         </div>
 
         <div class="section">
-          AirTag sledování (souhlas zákazníka): ${form.airtag ? "ANO" : "NE"}
+          AirTag sledování: ${form.airtag ? "ANO" : "NE"}
         </div>
 
-       <br/><br/>
+        <br/><br/>
 
-<div style="margin-top: 10px;">
-  <div class="section" style="font-size: 12px;">
-    Zákazník souhlasí se zpracováním osobních údajů za účelem evidence výpůjčky
-    a ochrany majetku půjčitele.
-  </div>
+        <div class="section" style="font-size: 12px;">
+          Zákazník souhlasí se zpracováním osobních údajů za účelem evidence výpůjčky
+          a ochrany majetku půjčitele.
+        </div>
 
-  <div class="section">
-    Podpis zákazníka: ________________________
-  </div>
-</div>
+        <div class="section">
+          Podpis zákazníka: ________________________
+        </div>
+
       </body>
     </html>
   `;
+
   const win = window.open("", "_blank");
   if (!win) {
-  alert("Povol popup okna pro tisk smlouvy");
+    alert("Povol popup okna pro tisk smlouvy");
     return;
-}
+  }
+
   win.document.write(content);
-win.document.close();
+  win.document.close();
 
-win.document.write(content);
-win.document.close();
+  setTimeout(() => {
+    win.focus();
+    win.print();
+  }, 1000);
+};
 
-setTimeout(() => {
-  win.focus();
-  win.print();
-}, 1000);
-const generateQR = (amount, message) => {
   const iban = "CZ4955000000000794545052";
 
   const spayd = `SPD*1.0*ACC:${iban}*AM:${amount}.00*CC:CZK*X-VS:${variableSymbol}*MSG:${message}`;
