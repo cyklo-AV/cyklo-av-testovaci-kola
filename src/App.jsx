@@ -91,10 +91,11 @@ const printContract = () => {
         </div>
 
         <div class="section">
-          <strong>Zákazník:</strong><br/>
-          ${form.name}<br/>
-          ${form.phone}
-        </div>
+  <strong>Zákazník:</strong><br/>
+  ${form.name}<br/>
+  ${form.phone}<br/>
+  ${form.idType}: ${form.idNumber}
+</div>
 
         <div class="section">
           <strong>Kolo:</strong><br/>
@@ -124,6 +125,11 @@ const printContract = () => {
         </div>
 
         <br/><br/>
+
+        <div class="section" style="font-size: 12px;">
+  Zákazník souhlasí se zpracováním osobních údajů za účelem evidence výpůjčky
+  a ochrany majetku půjčitele.
+</div>
 
         <div class="section">
           Podpis zákazníka: ________________________
