@@ -83,13 +83,7 @@ const variableSymbol = contractId.toString().slice(-10); // kratší VS
   const variableSymbol = contractId.toString().slice(-10);
 
   const generateQR = (amount, message) => {
-    const iban = "CZ4955000000000794545052";
-
-    const spayd = `SPD*1.0*ACC:${iban}*AM:${amount}.00*CC:CZK*X-VS:${variableSymbol}*MSG:${message}`;
-
-    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(spayd)}`;
-  };
-
+  
   const content = `
     <html>
       <head>
