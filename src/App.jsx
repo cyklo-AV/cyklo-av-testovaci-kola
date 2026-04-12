@@ -110,6 +110,23 @@ const printContract = () => {
           Kauce: ${form.deposit} Kč
         </div>
 
+<div class="section">
+  <strong>QR platby:</strong><br/><br/>
+
+  <table>
+    <tr>
+      <td>
+        Zápůjčné:<br/>
+        <img src="${generateQR(total, "Zapujcne")}" width="120"/>
+      </td>
+      <td style="padding-left: 20px;">
+        Kauce:<br/>
+        <img src="${generateQR(form.deposit, "Kauce")}" width="120"/>
+      </td>
+    </tr>
+  </table>
+</div>
+
         <div class="section">
           <strong>Doplňky:</strong><br/>
           ${
