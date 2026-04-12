@@ -68,7 +68,15 @@ export default function App() {
   );
   
   const total = (Number(form.price) + extrasSum) * Number(form.days);
-const printContract = () => {
+
+  const contractId = Date.now(); // unikátní číslo smlouvy
+const now = new Date();
+
+const formatDate = now.toLocaleString("cs-CZ");
+
+const variableSymbol = contractId.toString().slice(-10); // kratší VS
+  
+  const printContract = () => {
   const content = `
     <html>
       <head>
@@ -81,6 +89,12 @@ const printContract = () => {
       </head>
       <body>
         <h1>Smlouva o výpůjčce kola</h1>
+
+<div class="section">
+  <strong>Číslo smlouvy:</strong> ${contractId}<br/>
+  <strong>Datum:</strong> ${formatDate}<br/>
+  <strong>Variabilní symbol:</strong> ${variableSymbol}
+</div>
 
         <div class="section">
           <strong>Půjčitel:</strong><br/>
@@ -157,15 +171,17 @@ const printContract = () => {
   win.document.write(content);
 win.document.close();
 
-win.onload = () => {
-  setTimeout(() => {
-    win.print();
-  }, 500); // krátké zpoždění = načtou se QR
-};
-const generateQR = (amount, message) => {
-  const iban = "CZ4955000000000794545052"; // uprav na svůj účet
+win.document.write(content);
+win.document.close();
 
-  const spayd = `SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*MSG:${message}`;
+setTimeout(() => {
+  win.focus();
+  win.print();
+}, 1000);
+const generateQR = (amount, message) => {
+  const iban = "CZ4955000000000794545052";
+
+  const spayd = `SPD*1.0*ACC:${iban}*AM:${amount}.00*CC:CZK*X-VS:${variableSymbol}*MSG:${message}`;
 
   return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(spayd)}`;
 };
