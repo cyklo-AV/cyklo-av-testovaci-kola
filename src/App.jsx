@@ -162,7 +162,7 @@ const generateQR = (amount, message) => {
      <input placeholder="Jméno" name="name" onChange={handleChange} /><br/><br/>
 <input placeholder="Telefon" name="phone" onChange={handleChange} /><br/><br/>
 
-<select name="idType" onChange={handleChange}>
+<select name="idType" value={form.idType} onChange={handleChange}>
   <option value="OP">Občanský průkaz</option>
   <option value="PAS">Pas</option>
 </select>
@@ -207,7 +207,8 @@ const generateQR = (amount, message) => {
 
       <input type="number" value={form.price} readOnly />
 <input type="number" value={form.deposit} readOnly />
-
+<br /><br />
+      
       <h3>Doplňky</h3>
       {EXTRAS.map(e => (
         <div key={e.id}>
@@ -218,13 +219,17 @@ const generateQR = (amount, message) => {
         </div>
       ))}
 
-      <label>
-      <input
-  type="checkbox"
-  name="airtag"
-  checked={form.airtag}
-  onChange={handleChange}
-/>
+ <label>
+  <input
+    type="checkbox"
+    name="airtag"
+    checked={form.airtag}
+    onChange={handleChange}
+  />
+  Souhlas s AirTag
+</label>
+
+<br /><br />
 
       <h2>Celkem: {total} Kč</h2>
 <h3>QR platby</h3>
