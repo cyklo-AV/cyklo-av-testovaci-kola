@@ -139,7 +139,14 @@ const printContract = () => {
       </body>
     </html>
   `;
+const generateQR = (amount, message) => {
+  const iban = "CZ6508000000192000145399"; // 👉 uprav na svůj účet
+  const name = "Cyklo AV";
 
+  const spayd = `SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*MSG:${message}`;
+
+  return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(spayd)}`;
+};
   const win = window.open("", "_blank");
   if (!win) {
   alert("Povol popup okna pro tisk smlouvy");
@@ -221,7 +228,20 @@ const printContract = () => {
 />
 
       <h2>Celkem: {total} Kč</h2>
-     
+<h3>QR platby</h3>
+
+<div>
+  <div>Zápůjčné:</div>
+  <img src={generateQR(total, "Zapujcne kolo")} alt="QR zápůjčné" />
+</div>
+
+<br />
+
+<div>
+  <div>Kauce:</div>
+  <img src={generateQR(form.deposit, "Kauce kolo")} alt="QR kauce" />
+</div>
+        
 <button onClick={printContract}>
   Vytisknout smlouvu
 </button>
