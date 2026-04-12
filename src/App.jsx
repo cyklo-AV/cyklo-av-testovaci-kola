@@ -245,7 +245,9 @@ const generateQR = (amount, message) => {
   <div>Kauce:</div>
   <img src={generateQR(form.deposit, "Kauce kolo")} alt="QR kauce" />
 </div>
-        
+      
+<br />
+      
 <button onClick={printContract}>
   Vytisknout smlouvu
 </button>
