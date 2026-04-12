@@ -126,10 +126,11 @@ const printContract = () => {
 
         <br/><br/>
 
+        <div style={{ marginTop: 10 }}>
         <div class="section" style="font-size: 12px;">
   Zákazník souhlasí se zpracováním osobních údajů za účelem evidence výpůjčky
   a ochrany majetku půjčitele.
-</div>
+        </div>
 
         <div class="section">
           Podpis zákazníka: ________________________
