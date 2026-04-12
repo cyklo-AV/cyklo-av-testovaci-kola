@@ -139,10 +139,10 @@ export default function App() {
             <strong>QR platby:</strong><br/><br/>
 
             Zápůjčné:<br/>
-            <img src="${generateQR(total, "ZAPUJCKA")}" width="150"/><br/><br/>
+            <img src="${generateQR(total, "ZAPUJCKA")}&t=${Date.now()}" width="150"/><br/><br/>
 
             Kauce:<br/>
-            <img src="${generateQR(form.deposit, "KAUCE")}" width="150"/>
+            <img src="${generateQR(form.deposit, "KAUCE")}&t=${Date.now()}" width="150"/>
           </div>
 
           <div class="section">
@@ -174,10 +174,14 @@ export default function App() {
     if (!win) return alert("Povol popup okna");
 
     win.document.write(content);
-    win.document.close();
-    win.print();
-  };
+win.document.close();
 
+win.onload = () => {
+  setTimeout(() => {
+    win.focus();
+    win.print();
+  }, 800);
+};
   return (
     <div style={{ padding: 20, maxWidth: 600 }}>
       <h1>cyklo-AV TESTovací kola</h1>
