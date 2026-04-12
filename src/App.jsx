@@ -148,8 +148,7 @@ const printContract = () => {
   win.document.write(content);
   win.document.close();
   win.print();
-};
-  
+}; 
   return (
     <div style={{ padding: 20, maxWidth: 600 }}>
       <h1>cyklo-AV TESTovací kola</h1>
