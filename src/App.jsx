@@ -1,4 +1,5 @@
 import { useState } from "react";
+import html2pdf from "html2pdf.js";
 
 const BIKES = [
   {
@@ -69,119 +70,85 @@ export default function App() {
 
   const total = (Number(form.price) + extrasSum) * Number(form.days);
 
-  const printContract = () => {
+  const generateQR = (amount, message, vs) => {
+    const iban = "CZ4955000000000794545052";
+
+    const spayd = `SPD*1.0*ACC:${iban}*AM:${Number(amount).toFixed(
+      2
+    )}*CC:CZK*X-VS:${vs}*MSG:${message}`;
+
+    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+      spayd
+    )}`;
+  };
+
+  const generatePDF = () => {
     const contractId = Date.now();
+    const vs = contractId.toString().slice(-10);
     const now = new Date();
-    const formatDate = now.toLocaleString("cs-CZ");
-    const variableSymbol = contractId.toString().slice(-10);
-
-    const generateQR = (amount, message) => {
-      const iban = "CZ4955000000000794545052";
-
-      const spayd = `SPD*1.0*ACC:${iban}*AM:${Number(amount).toFixed(
-        2
-      )}*CC:CZK*X-VS:${variableSymbol}*MSG:${message}`;
-
-      return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-        spayd
-      )}`;
-    };
 
     const content = `
-      <html>
-        <head>
-          <title>Smlouva o výpůjčce</title>
-          <style>
-            body { font-family: Arial; padding: 20px; }
-            h1 { margin-bottom: 10px; }
-            .section { margin-bottom: 15px; }
-          </style>
-        </head>
-        <body>
+      <div style="font-family: Arial; padding: 20px;">
+        <h2>Smlouva o výpůjčce kola</h2>
 
-          <h1>Smlouva o výpůjčce kola</h1>
+        <p><strong>Číslo:</strong> ${contractId}</p>
+        <p><strong>Datum:</strong> ${now.toLocaleString("cs-CZ")}</p>
+        <p><strong>VS:</strong> ${vs}</p>
 
-          <div class="section">
-            <strong>Číslo smlouvy:</strong> ${contractId}<br/>
-            <strong>Datum:</strong> ${formatDate}<br/>
-            <strong>VS:</strong> ${variableSymbol}
-          </div>
+        <hr/>
 
-          <div class="section">
-            <strong>Půjčitel:</strong><br/>
-            Aleš Vondráček - cyklo/AV<br/>
-            IČ: 65099630<br/>
-            Fučíkova 665, Raspenava<br/>
-            Tel: +420792306880
-          </div>
+        <p><strong>Zákazník:</strong><br/>
+        ${form.name}<br/>
+        ${form.phone}<br/>
+        ${form.idType}: ${form.idNumber}</p>
 
-          <div class="section">
-            <strong>Zákazník:</strong><br/>
-            ${form.name}<br/>
-            ${form.phone}<br/>
-            ${form.idType}: ${form.idNumber}
-          </div>
+        <p><strong>Kolo:</strong> ${form.bike} (${form.frame})</p>
 
-          <div class="section">
-            <strong>Kolo:</strong><br/>
-            ${form.bike}<br/>
-            Rám: ${form.frame}
-          </div>
+        <p><strong>Cena:</strong> ${total} Kč</p>
+        <p><strong>Kauce:</strong> ${form.deposit} Kč</p>
 
-          <div class="section">
-            <strong>Výpůjčka:</strong><br/>
-            Počet dní: ${form.days}<br/>
-            Cena: ${total} Kč<br/>
-            Kauce: ${form.deposit} Kč
-          </div>
+        <hr/>
 
-          <div class="section">
-            <strong>QR platby:</strong><br/><br/>
+        <p><strong>QR Zápůjčné</strong></p>
+        <img src="${generateQR(total, "ZAPUJCKA", vs)}" width="180"/>
 
-            Zápůjčné:<br/>
-            <img src="${generateQR(total, "ZAPUJCKA")}&t=${Date.now()}" width="150"/><br/><br/>
+        <p><strong>QR Kauce</strong></p>
+        <img src="${generateQR(form.deposit, "KAUCE", vs)}" width="180"/>
 
-            Kauce:<br/>
-            <img src="${generateQR(form.deposit, "KAUCE")}&t=${Date.now()}" width="150"/>
-          </div>
+        <hr/>
 
-          <div class="section">
-            Doplňky:
-            ${
-              EXTRAS.filter((e) => form.extras[e.id])
-                .map((e) => e.label)
-                .join(", ") || "žádné"
-            }
-          </div>
+        <p><strong>Doplňky:</strong>
+        ${
+          EXTRAS.filter((e) => form.extras[e.id])
+            .map((e) => e.label)
+            .join(", ") || "žádné"
+        }</p>
 
-          <div class="section">
-            AirTag: ${form.airtag ? "ANO" : "NE"}
-          </div>
+        <p>AirTag: ${form.airtag ? "ANO" : "NE"}</p>
 
-          <div class="section" style="font-size: 12px;">
-            Zákazník souhlasí se zpracováním osobních údajů.
-          </div>
+        <br/><br/>
+        <p style="font-size:12px;">
+          Souhlas se zpracováním osobních údajů.
+        </p>
 
-          <div class="section">
-            Podpis: ________________________
-          </div>
-
-        </body>
-      </html>
+        <p>Podpis: ____________________</p>
+      </div>
     `;
 
-    const win = window.open("", "_blank");
-    if (!win) return alert("Povol popup okna");
+    const element = document.createElement("div");
+    element.innerHTML = content;
 
-    win.document.write(content);
-win.document.close();
+    html2pdf()
+      .set({
+        margin: 10,
+        filename: `smlouva_${vs}.pdf`,
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+      })
+      .from(element)
+      .save();
+  };
 
-win.onload = () => {
-  setTimeout(() => {
-    win.focus();
-    win.print();
-  }, 800);
-};
   return (
     <div style={{ padding: 20, maxWidth: 600 }}>
       <h1>cyklo-AV TESTovací kola</h1>
@@ -199,11 +166,7 @@ win.onload = () => {
 
       <br /><br />
 
-      <input
-        name="idNumber"
-        placeholder="Číslo dokladu"
-        onChange={handleChange}
-      />
+      <input name="idNumber" placeholder="Číslo dokladu" onChange={handleChange} />
 
       <br /><br />
 
@@ -227,44 +190,10 @@ win.onload = () => {
 
       <br /><br />
 
-      <select
-        value={form.frame}
-        onChange={(e) => setForm({ ...form, frame: e.target.value })}
-      >
-        {(BIKES.find((b) => b.name === form.bike)?.frames || []).map((f) => (
-          <option key={f}>{f}</option>
-        ))}
-      </select>
-
       <h3>Celkem: {total} Kč</h3>
 
-      <h3>Doplňky</h3>
-      {EXTRAS.map((e) => (
-        <div key={e.id}>
-          <label>
-            <input
-              type="checkbox"
-              onChange={() => toggleExtra(e.id)}
-            />
-            {e.label}
-          </label>
-        </div>
-      ))}
-
-      <label>
-        <input
-          type="checkbox"
-          name="airtag"
-          checked={form.airtag}
-          onChange={handleChange}
-        />
-        AirTag
-      </label>
-
-      <br /><br />
-
-      <button onClick={printContract}>
-        Vytisknout smlouvu
+      <button onClick={generatePDF}>
+        Vygenerovat PDF smlouvu
       </button>
     </div>
   );
