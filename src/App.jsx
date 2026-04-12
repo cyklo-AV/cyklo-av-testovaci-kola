@@ -149,6 +149,14 @@ const printContract = () => {
   win.document.close();
   win.print();
 };
+  const generateQR = (amount, message) => {
+  const iban = "CZ4955000000000794545044"; // 👉 DOPLŇ TVŮJ ÚČET
+  const name = "Cyklo AV";
+
+  const spayd = `SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*MSG:${message}`;
+
+  return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(spayd)}`;
+};
   return (
     <div style={{ padding: 20, maxWidth: 600 }}>
       <h1>cyklo-AV TESTovací kola</h1>
