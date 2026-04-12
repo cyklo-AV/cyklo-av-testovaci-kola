@@ -64,7 +64,11 @@ export default function App() {
     (sum, e) => sum + (form.extras[e.id] ? e.price : 0),
     0
   );
-
+  
+<button onClick={printContract}>
+  Vytisknout smlouvu
+</button>
+  
   const total = (Number(form.price) + extrasSum) * Number(form.days);
 const printContract = () => {
   const content = `
