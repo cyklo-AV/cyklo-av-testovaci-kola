@@ -42,9 +42,9 @@ export default function App() {
   days: 1,
   deposit: BIKES[0].deposit,
   extras: {},
-  airtag: false
-   idType: "OP",
-idNumber: "",
+  airtag: false,
+  idType: "OP",
+  idNumber: "",
 });
 
   const handleChange = (e) => {
@@ -126,7 +126,7 @@ const printContract = () => {
 
         <br/><br/>
 
-        <div style={{ marginTop: 10 }}>
+        <div style="margin-top: 10px;">
         <div class="section" style="font-size: 12px;">
   Zákazník souhlasí se zpracováním osobních údajů za účelem evidence výpůjčky
   a ochrany majetku půjčitele.
