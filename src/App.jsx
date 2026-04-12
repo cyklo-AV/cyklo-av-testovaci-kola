@@ -139,14 +139,6 @@ const printContract = () => {
       </body>
     </html>
   `;
-const generateQR = (amount, message) => {
-  const iban = "CZ6508000000192000145399"; // 👉 uprav na svůj účet
-  const name = "Cyklo AV";
-
-  const spayd = `SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*MSG:${message}`;
-
-  return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(spayd)}`;
-};
   const win = window.open("", "_blank");
   if (!win) {
   alert("Povol popup okna pro tisk smlouvy");
@@ -156,6 +148,13 @@ const generateQR = (amount, message) => {
   win.document.close();
   win.print();
 }; 
+const generateQR = (amount, message) => {
+  const iban = "CZ6508000000192000145399"; // uprav na svůj účet
+
+  const spayd = `SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*MSG:${message}`;
+
+  return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(spayd)}`;
+};
   return (
     <div style={{ padding: 20, maxWidth: 600 }}>
       <h1>cyklo-AV TESTovací kola</h1>
@@ -232,7 +231,7 @@ const generateQR = (amount, message) => {
 
 <div>
   <div>Zápůjčné:</div>
-  <img src={generateQR(total, "Zapujcne kolo")} alt="QR zápůjčné" />
+  <img src={generateQR(total, "Zapůjčné kolo")} alt="QR zápůjčné" />
 </div>
 
 <br />
