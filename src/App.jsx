@@ -35,7 +35,7 @@ const EXTRAS = [
 export default function App() {
  const [form, setForm] = useState({
   name: "",
-  phone: "",
+  phone: "", 
   bike: BIKES[0].name,
   frame: BIKES[0].frames[0],
   price: BIKES[0].price,
@@ -43,6 +43,8 @@ export default function App() {
   deposit: BIKES[0].deposit,
   extras: {},
   airtag: false
+   idType: "OP",
+idNumber: "",
 });
 
   const handleChange = (e) => {
