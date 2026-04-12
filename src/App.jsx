@@ -121,21 +121,21 @@ const printContract = () => {
         </div>
 
         <div class="section">
-          AirTag sledování: ${form.airtag ? "ANO" : "NE"}
+          AirTag sledování (souhlaas zákazníka): ${form.airtag ? "ANO" : "NE"}
         </div>
 
-        <br/><br/>
+       <br/><br/>
 
-        <div style="margin-top: 10px;">
-        <div class="section" style="font-size: 12px;">
-  Zákazník souhlasí se zpracováním osobních údajů za účelem evidence výpůjčky
-  a ochrany majetku půjčitele.
-        </div>
+<div style="margin-top: 10px;">
+  <div class="section" style="font-size: 12px;">
+    Zákazník souhlasí se zpracováním osobních údajů za účelem evidence výpůjčky
+    a ochrany majetku půjčitele.
+  </div>
 
-        <div class="section">
-          Podpis zákazníka: ________________________
-        </div>
-
+  <div class="section">
+    Podpis zákazníka: ________________________
+  </div>
+</div>
       </body>
     </html>
   `;
