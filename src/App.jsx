@@ -143,13 +143,8 @@ const printContract = () => {
   const win = window.open("", "_blank");
   if (!win) {
   alert("Povol popup okna pro tisk smlouvy");
-  return;
-}
-  win.document.write(content);
-  win.document.close();
-  win.print();
-};
-  const generateQR = (amount, message) => {
+
+    const generateQR = (amount, message) => {
   const iban = "CZ4955000000000794545044"; // 👉 DOPLŇ TVŮJ ÚČET
   const name = "Cyklo AV";
 
@@ -157,6 +152,13 @@ const printContract = () => {
 
   return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(spayd)}`;
 };
+    return;
+}
+  win.document.write(content);
+  win.document.close();
+  win.print();
+};
+  
   return (
     <div style={{ padding: 20, maxWidth: 600 }}>
       <h1>cyklo-AV TESTovací kola</h1>
