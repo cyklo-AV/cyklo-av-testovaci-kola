@@ -142,8 +142,23 @@ const printContract = () => {
     <div style={{ padding: 20, maxWidth: 600 }}>
       <h1>cyklo-AV TESTovací kola</h1>
 
-      <input placeholder="Jméno" name="name" onChange={handleChange} /><br/><br/>
-      <input placeholder="Telefon" name="phone" onChange={handleChange} /><br/><br/>
+     <input placeholder="Jméno" name="name" onChange={handleChange} /><br/><br/>
+<input placeholder="Telefon" name="phone" onChange={handleChange} /><br/><br/>
+
+<select name="idType" onChange={handleChange}>
+  <option value="OP">Občanský průkaz</option>
+  <option value="PAS">Pas</option>
+</select>
+
+<br /><br />
+
+<input
+  placeholder="Číslo dokladu"
+  name="idNumber"
+  onChange={handleChange}
+/>
+
+<br /><br />
 
     <select
   value={form.bike}
